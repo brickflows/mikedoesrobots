@@ -1,0 +1,344 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const m = '/media/cafe';
+---
+
+<Base
+  title="Café Racer Concept"
+  description="A complete motorcycle modelled in SolidWorks, a frame redesigned in ANSYS from FoS 0.27 to 1.14, two parts planned for manufacture, and a product film rendered in Blender."
+  sheet="2 of 3"
+  dwg="MDR-002"
+>
+  <header class="cs-head wrap">
+    <div class="cs-head__top label">
+      <a href="/#work">← All work</a>
+      <span>Independent project · 2026</span>
+    </div>
+    <h1>Café Racer <em>Concept</em></h1>
+    <p class="cs-head__lede">
+      I rebuilt a complete motorcycle in SolidWorks from a training model, then treated it as if it had to be built and
+      ridden: found its loads, analysed the frame and gearbox, fixed what failed, and planned how two key parts would be
+      made.
+    </p>
+
+    <dl class="spec">
+      <div><dt class="label">CAD</dt><dd>217 parts, 41 assemblies, 42 drawings</dd></div>
+      <div><dt class="label">Frame</dt><dd>FoS 0.27 → 1.14</dd></div>
+      <div><dt class="label">Output shaft</dt><dd>Fatigue FoS 1.74, infinite life</dd></div>
+      <div><dt class="label">Tools</dt><dd>SolidWorks · ANSYS · Blender</dd></div>
+    </dl>
+
+    <div class="cs-media">
+      <video controls preload="none" playsinline poster={`${m}/hero.webp`}>
+        <source src="/media/cafe-racer-film.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="chapter" style="border-top: 0;">
+      <div class="chapter__side label"><b>Overview</b>The vehicle</div>
+      <div class="chapter__body">
+        <h2 class="h2">The whole bike, <em>part by part.</em></h2>
+        <div class="pair">
+          <div class="prose">
+            <p>
+              Every part was modelled in SolidWorks and built up through sub-assemblies into one top-level assembly. The
+              bodywork (tank, seat, side and rear panels) is my own design.
+            </p>
+            <p>
+              The CAD engine weighed only 18.4 kg: thin walls, a hollow flywheel, no starter. I set it to 36 kg for the
+              load cases, because a light engine would have hidden the real frame loads.
+            </p>
+          </div>
+          <div class="table-scroll">
+            <table class="data">
+              <tbody>
+                <tr><td>Engine</td><td class="num">Parallel twin, Ø60 bore, 250 cc class</td></tr>
+                <tr><td>Gearbox</td><td class="num">5-speed · primary 1.571 · 1st 2.00</td></tr>
+                <tr><td>Wheelbase / head angle</td><td class="num">1403.54 mm / 33.0°</td></tr>
+                <tr><td>Seat height</td><td class="num">740 mm</td></tr>
+                <tr><td>Mass</td><td class="num">151.75 kg dry (CAD) · 162 kg wet</td></tr>
+                <tr><td>Front / rear split</td><td class="num">40.4 / 59.6% with two riders</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <figure class="fig fig--render reveal">
+          <img src={`${m}/exploded.webp`} alt="Exploded view: bodywork lifted off the trellis frame, engine dropped below, front and rear ends pulled apart." loading="lazy" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="chapter__side label"><b>A</b>Frame</div>
+      <div class="chapter__body">
+        <h2 class="h2">The frame failed. <em>Thicker</em> tube didn't fix it.</h2>
+        <div class="prose">
+          <h3>Load case</h3>
+          <p>
+            A hard bump briefly triples every weight on the bike. I stacked that on a rider and a passenger (312 kg in
+            total) so the frame is sized for the worst day, not an average one. Loads go in where parts bolt on: the
+            engine into its four mounts, the riders onto the seat rails, and the suspension forces onto the shock tab
+            and linkage bracket, each solved by hand through the rising-rate linkage.
+          </p>
+          <p>
+            The rear wheel carries 5469.9 N at 3 g, but the shock pushes on the frame with 23 215 N: 7.6 times the
+            weight of the whole loaded bike.
+          </p>
+        </div>
+
+        <div class="pair reveal">
+          <figure class="fig">
+            <img src={`${m}/before_stress.webp`} alt="ANSYS beam stress plot of the original frame, peak near the shock mount." loading="lazy" />
+            <figcaption>Before: 1692.6 MPa in the Ø12 solid braces between the shock mount and swingarm pivot. FoS 0.27.</figcaption>
+          </figure>
+          <figure class="fig">
+            <img src={`${m}/final_stress.webp`} alt="ANSYS beam stress plot of the redesigned frame with a much lower, more evenly spread peak." loading="lazy" />
+            <figcaption>After: 404.0 MPa, shared between one seat-brace joint and the shock-mount curve. FoS 1.14. Outside shape unchanged.</figcaption>
+          </figure>
+        </div>
+
+        <p class="pull reveal">The problem was how the load <em>entered</em> the frame, not how thick that one tube was.</p>
+
+        <div class="prose">
+          <h3>Why it failed</h3>
+          <p>
+            The shock pushes the frame up with 23 kN while the swingarm pivot, only 244 mm below, pulls it down. In the
+            original frame that path ran through Ø12 solid bars loaded in bending. Even standing still with two riders
+            it sat at 564 MPa, above yield.
+          </p>
+          <h3>What I changed</h3>
+          <p>
+            AISI 4130 normalised tube, yield 460 MPa. I changed only the tubes on that load path: shock-area curves,
+            down tube and lower diagonals to Ø35×30, and the two highest-loaded members to a 4 mm wall. My first
+            instinct, upsizing the tube with the peak, did nothing (661.5 → 675.9 MPa).
+          </p>
+          <h3>Result</h3>
+          <p>
+            FoS 0.27 → 1.14 in the worst case. Tail deflection 59.8 → 8.6 mm. Frame mass 18.1 → 20.5 kg (+13%) for 4.2×
+            lower peak stress. This is a static check only; weld fatigue and heat-affected-zone strength are next.
+          </p>
+        </div>
+
+        <figure class="fig reveal">
+          <img src={`${m}/fig_redesign2.webp`} alt="Bar chart of peak frame stress over ten design iterations against the 460 MPa yield line." loading="lazy" />
+          <figcaption>
+            Peak stress per iteration. Phase 1 fixed the load path. The swingarm study then measured the link lever arm
+            at 119.28 mm, not 159 mm: the link load rose 33%, the frame failed again (550.5 MPa), and four targeted
+            changes adding about 1.4 kg restored FoS 1.14.
+          </figcaption>
+        </figure>
+
+        <div class="prose">
+          <h3>How I knew the model was right</h3>
+          <p>
+            A free-free modal run gave exactly six rigid-body modes, so every tube was connected. The steering-head
+            reaction landed 2.0% from my hand calculation. Halving the mesh size changed the peak by only 3.2%.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="chapter__side label"><b>B</b>Swingarm</div>
+      <div class="chapter__body">
+        <h2 class="h2">A sideways hit governs, <em>not</em> the chain.</h2>
+        <div class="pair">
+          <figure class="fig">
+            <img src={`${m}/sw_render.webp`} alt="Render of the swingarm: two box-section arms joined by a solid crossmember." loading="lazy" />
+            <figcaption>AISI 4130 normalised, 7.659 kg. Two 18 × 60 × 2 mm box arms joined by a solid 50 mm crossmember that carries the shock-link lugs.</figcaption>
+          </figure>
+          <figure class="fig">
+            <img src={`${m}/sw_corner_stress.webp`} alt="ANSYS stress plot of the swingarm under the lateral load case." loading="lazy" />
+            <figcaption>Lateral envelope: 434.1 MPa at the arm-to-block joint, FoS 1.06. The governing case.</figcaption>
+          </figure>
+        </div>
+
+        <div class="table-scroll reveal">
+          <table class="data">
+            <thead>
+              <tr><th scope="col">Load case</th><th scope="col">Peak stress</th><th scope="col">FoS</th><th scope="col">Deflection</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>3 g vertical bump</td><td class="num">295.6 MPa</td><td class="num">1.56</td><td class="num">3.59 mm</td></tr>
+              <tr><td>Chain pull 2218 N, one side</td><td class="num">36.1 MPa</td><td class="num">12.7</td><td class="num">0.35 mm</td></tr>
+              <tr><td>Steady cornering, 45° lean (scaled from the bump run)</td><td class="num">≈ 139 MPa</td><td class="num">≈ 3.3</td><td class="num">≈ 1.7 mm</td></tr>
+              <tr><td>Lateral envelope: 1 g vertical + 1 g sideways</td><td class="num">434.1 MPa</td><td class="delta">1.06</td><td class="num">6.45 mm</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="prose">
+          <h3>Reading it</h3>
+          <p>
+            The arm is 60 mm tall but only 18 mm wide, so it is 7.3× stiffer and 2.2× stronger up-and-down than
+            sideways. A genuine sideways load (a crossed-up landing, a kerb strike, a sliding tyre suddenly gripping)
+            finds that weak axis.
+          </p>
+          <p>
+            My hand calculation had flagged the chain pull as the worst case at 311 MPa, treating it as sideways
+            bending. The FEA showed the chain pulls along the arm, so the arm carries it mostly in tension: 36 MPa.
+          </p>
+          <h3>Lightweighting, in progress</h3>
+          <p>
+            The 4.90 kg solid crossmember sits mostly below 70 MPa while the arm walls next to it carry 300. A topology
+            run at 35% retained mass empties the core and keeps material on diagonal paths from the lug bosses to each
+            arm joint. Swingarms are welded from tube and plate, so I'm using that result as a map of load paths, not a
+            part: a round cross-tube with gussets is being modelled now.
+          </p>
+        </div>
+
+        <div class="pair reveal">
+          <figure class="fig">
+            <img src={`${m}/sw_joint.webp`} alt="Stress plot showing the solid crossmember lightly loaded next to highly stressed arm walls." loading="lazy" />
+            <figcaption>Baseline, bump case: the solid block sits mostly below 70 MPa.</figcaption>
+          </figure>
+          <figure class="fig">
+            <img src={`${m}/sw_topo.webp`} alt="Topology optimisation result with the core of the crossmember removed." loading="lazy" />
+            <figcaption>Topology result, 35% retained: material stays on diagonal paths from the lugs to each arm joint.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="chapter__side label"><b>C</b>Transmission</div>
+      <div class="chapter__body">
+        <h2 class="h2">The shaft passes fatigue. The gear teeth <em>don't.</em></h2>
+        <div class="prose">
+          <h3>Following the torque</h3>
+          <p>
+            24 N·m at the crank × 66/42 in the primary drive × 52/26 in 1st gear = 75.4 N·m on the output shaft: 3.1
+            times the engine's torque, on a neck only 16 mm across. That neck is the thinnest section, carries the full
+            torque, and sits beside bearing A where the sprocket's overhang moment peaks. By hand: 183.5 MPa von Mises,
+            FoS 3.0. The FEA later agreed on the location.
+          </p>
+        </div>
+
+        <figure class="fig reveal">
+          <img src={`${m}/fig_fbd.webp`} alt="Free-body diagram of the output shaft in first gear with bearing reactions, gear forces and chain pull." loading="lazy" />
+          <figcaption>Free-body diagram, 1st gear. Worst case: chain pull opposite the gear resultant. The critical section is the Ø16 neck beside bearing A.</figcaption>
+        </figure>
+
+        <div class="pair reveal">
+          <figure class="fig">
+            <img src={`${m}/shaft_singular.webp`} alt="Stress plot with a sharp peak at the spline-end corner of the shaft." loading="lazy" />
+            <figcaption>Rejected peak: the spline-end corner rose 270.7 → 343.2 → 491.7 MPa with refinement. A singularity next to the loads, so it was checked by hand instead (FoS 3.4).</figcaption>
+          </figure>
+          <figure class="fig">
+            <img src={`${m}/fig_goodman.webp`} alt="Goodman diagram for the shaft neck showing the operating point inside the infinite-life line." loading="lazy" />
+            <figcaption>Goodman diagram, Ø16 neck. Se = 268.6 MPa after Marin factors, Kf 1.10 → n = 1.74 for infinite life.</figcaption>
+          </figure>
+        </div>
+
+        <div class="prose">
+          <h3>Conclusion</h3>
+          <p>
+            The shaft is fine; the teeth are the weak link. The current 1st-gear pair (module 1.1, 8 mm face) reaches
+            1511 MPa in bending against a 379 MPa limit. A resized pair (module 2.5, 16 mm face) passes bending at FoS
+            1.28 but is still marginal in pitting, so it needs about a 20 mm face. Resizing moves both shafts and the
+            cases, so it is logged as future work.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="chapter__side label"><b>D</b>Manufacture</div>
+      <div class="chapter__body">
+        <h2 class="h2">Two parts taken to a <em>making</em> plan.</h2>
+
+        <div class="pair">
+          <div class="prose">
+            <h3>Output shaft: bar to ground journal</h3>
+            <p>
+              Every operation holds the shaft between the same two centre holes, so all diameters stay concentric.
+              Carburizing distorts the shaft slightly, so the bearing seats are left 0.2 mm big and ground to size
+              afterwards. The spline-end singularity from the FEA became a drawing note: R0.5 minimum run-out, which
+              the gear-shaping cutter leaves for free.
+            </p>
+          </div>
+          <ol class="steps steps--ops">
+            <li><b>Op 10–20</b><span>Cut 8620 bar Ø22 × 155; face, centre-drill</span></li>
+            <li><b>Op 30</b><span>CNC turn between centres, seats +0.2 mm</span></li>
+            <li><b>Op 40</b><span>Hob 12-spline; shape 8-spline</span></li>
+            <li><b>Op 50</b><span>Carburize 0.5–0.8 mm, 58–62 HRC</span></li>
+            <li><b>Op 60–70</b><span>Grind Ø20 k5, Ra 0.4; inspect</span></li>
+          </ol>
+        </div>
+
+        <figure class="fig reveal">
+          <img src={`${m}/shaft_dwg-1.webp`} alt="Dimensioned engineering drawing of the output shaft." loading="lazy" />
+          <figcaption>Output shaft drawing.</figcaption>
+        </figure>
+
+        <div class="prose">
+          <h3>Right engine case: A356-T6 permanent-mould casting</h3>
+          <p>
+            The model had been drawn like a machined part: no draft, 3 mm walls meeting Ø10 bosses, R1 inside corners
+            and an undercut saddle that needs a side core. The review produced seven fixes, from 1°/2° draft and cored
+            bosses to a side slide for the saddle.
+          </p>
+          <p>
+            It also caught a part that could not be bought. The gearbox bearing seats were drawn at Ø36, but no
+            catalogue bearing for a Ø20 shaft is 36 mm outside. The nearest real part is a 6904 (20 × 37 × 9), so the
+            seats became Ø37 N7. By 100 °C the aluminium seat opens by 0.029 mm, enough to wipe out almost all of the
+            interference, so the seats get retainer plates.
+          </p>
+        </div>
+
+        <div class="pair reveal">
+          <figure class="fig">
+            <img src={`${m}/case_annotated.webp`} alt="Annotated view of the right engine case marking casting problems." loading="lazy" />
+            <figcaption>Design-for-casting review of the right engine case.</figcaption>
+          </figure>
+          <figure class="fig">
+            <img src={`${m}/case_drawing-1.webp`} alt="Engineering drawing of the right engine case." loading="lazy" />
+            <figcaption>Right engine case drawing.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="chapter__side label"><b>E</b>Film</div>
+      <div class="chapter__body">
+        <h2 class="h2">From assembly tree to <em>seventy</em> seconds.</h2>
+        <ol class="steps">
+          <li><b>CAD</b><span>Every part modelled in SolidWorks 2026 and built up through sub-assemblies.</span></li>
+          <li><b>Export</b><span>A VBA macro walks the assembly tree and exports each sub-assembly to glTF, so the Blender scene keeps the CAD structure.</span></li>
+          <li><b>Rendering</b><span>Materials, lighting and animation in Blender 5.2 with Cycles. 1,620 frames at 2560 × 1440 on a render farm.</span></li>
+          <li><b>Edit</b><span>Captions and the end card are added by a Python script in Blender's sequencer.</span></li>
+          <li><b>Sound</b><span>A second script builds the music edit, engine and synthesized effects and masters the mix.</span></li>
+        </ol>
+
+        <div class="trio reveal">
+          <figure class="fig fig--render"><img src={`${m}/hero.webp`} alt="The café racer in powder blue with orange wheels." loading="lazy" /></figure>
+          <figure class="fig fig--render"><img src={`${m}/finish-green.webp`} alt="The café racer in the Army Green finish." loading="lazy" /></figure>
+          <figure class="fig fig--render"><img src={`${m}/finish-black.webp`} alt="The café racer in the Midnight Black finish." loading="lazy" /></figure>
+        </div>
+
+        <div class="prose">
+          <h3>Credits</h3>
+          <p>
+            The project started from the part reference drawings in Christopher Rothera's Udemy course "PTC Creo
+            Parametric - Full Motorbike Build", which I remodelled in SolidWorks. The bodywork is my own design, the
+            frame was redesigned to pass structural analysis, and a number of other parts were modified along the way.
+            Music: "Hard EDM" by kulakovka, from Pixabay. Studio lighting from Poly Haven; several materials from
+            BlenderKit.
+          </p>
+          <p>
+            <a href="https://github.com/brickflows/motorcycle">CAD, scripts and drawings on GitHub <span class="arrow">→</span></a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <a class="next" href="/work/front-wing/">
+      <span class="label">Next project</span>
+      <span>Front wing in ground effect <span class="arrow">→</span></span>
+    </a>
+  </div>
+</Base>

@@ -1,0 +1,301 @@
+---
+import Base from '../layouts/Base.astro';
+
+const work = [
+  {
+    no: '01',
+    title: 'Café Racer Concept',
+    text: 'A complete motorcycle modelled part by part, a frame redesigned until it passed, two parts planned for manufacture, and a 70-second product film.',
+    tools: 'SolidWorks · ANSYS · Blender',
+    status: '2026',
+    href: '/work/cafe-racer/',
+    img: '/media/cafe/exploded.webp',
+    alt: 'Exploded view of the café racer: bodywork, frame, engine and wheels separated.',
+  },
+  {
+    no: '02',
+    title: 'Front wing in ground effect',
+    text: 'One wing, eleven ride heights, 180 km/h: where downforce peaks, why it stalls, and the ride height I would actually set.',
+    tools: 'ANSYS Fluent · 2D RANS',
+    status: '2026',
+    href: '/work/front-wing/',
+    img: '/media/wing/cfd_vel020.webp',
+    alt: 'CFD velocity contours around an inverted wing close to the ground.',
+  },
+  {
+    no: '03',
+    title: 'Navi smart cane',
+    text: 'A smart navigation cane built by a four-person team. I lead the electronics and embedded side; the product film is in progress.',
+    tools: 'SolidWorks · Blender',
+    status: 'In progress',
+    img: '/media/navi/handle-thumb.webp',
+    alt: 'Render of the Navi cane handle with its light strip and two buttons.',
+  },
+  {
+    no: '04',
+    title: '6-axis cinema robot arm',
+    text: 'Joint torques sized from first principles (J2 56.6 N·m, J3 28.1 N·m) and a column-mounted turret for the J1 to J3 drive.',
+    tools: 'First-principles dynamics',
+    status: 'In design',
+  },
+];
+
+const checks = [
+  { name: 'Swingarm, shock-link reaction', hand: '23 295 N', fea: '23 296 N', delta: '1 N' },
+  { name: 'Swingarm, pivot reaction', hand: '17 825 N', fea: '17 826 N', delta: '1 N' },
+  { name: 'Output shaft, bearing A', hand: '2 224 N', fea: '2 289.8 N', delta: '3.0%' },
+  { name: 'Output shaft, bearing B', hand: '2 782 N', fea: '2 848.5 N', delta: '2.4%' },
+  { name: 'Output shaft, Ø16 neck stress', hand: '183.5 MPa', fea: '206.1 MPa', delta: '+12%, shoulder Kt' },
+];
+
+const posts = [
+  {
+    no: '01',
+    title: 'A mechanic is not a mechanical engineer',
+    text: 'Six months as an apprentice in a car workshop before university: what carried over to the degree, what did not, and what I broke.',
+    date: 'October 2026',
+    href: '/blog/mechanic-apprenticeship/',
+  },
+];
+---
+
+<Base
+  title="Micheal Adediran: mechanical design"
+  description="Mechanical engineering student at the University of Lagos. CAD, simulation and design-for-manufacture work, with every FEA result checked by hand."
+  sheet="1 of 3"
+  dwg="MDR-001"
+>
+  <section class="hero wrap">
+    <h1>I design machines,<br />then check them <em>twice.</em></h1>
+
+    <div class="hero__row">
+      <p class="hero__lede">
+        Once by hand, once in ANSYS. When the two disagree, I stop and find out why before moving on. I'm a mechanical
+        engineering student in Lagos, working towards transmission and chassis design.
+      </p>
+      <div class="hero__cta">
+        <a class="btn" href="#work">See the work <span class="arrow">↓</span></a>
+        <a class="btn btn--ghost" href="#contact">Get in touch</a>
+      </div>
+    </div>
+
+    <div class="hero__media">
+      <video autoplay muted loop playsinline poster="/media/hero-poster.webp" aria-label="The café racer model separating into its sub-assemblies and coming back together.">
+        <source src="/media/hero-loop.mp4" type="video/mp4" />
+      </video>
+      <p class="hero__tag label">Café Racer Concept · 217 parts · SolidWorks → ANSYS → Blender</p>
+      <button class="btn btn--light hero__play" type="button" data-film-open>▶ Watch the film · 70 s</button>
+    </div>
+  </section>
+
+  <section class="section wrap" id="work">
+    <div class="section__head">
+      <p class="label">Selected work</p>
+      <h2 class="h2">Four projects, taken <em>past</em> the pretty render.</h2>
+      <p>Each one is treated as if it had to be built: find the loads, analyse it, fix what fails, and plan how it would be made.</p>
+    </div>
+
+    <ol class="work">
+      {
+        work.map((item) => {
+          const Tag = item.href ? 'a' : 'div';
+          return (
+            <li class="reveal">
+              <Tag class="row" href={item.href}>
+                <span class="label">{item.no}</span>
+                <div class="row__main">
+                  <h3>
+                    {item.title} {item.href && <span class="arrow">→</span>}
+                  </h3>
+                  <p>{item.text}</p>
+                </div>
+                <div class="row__meta label">
+                  <span>{item.tools}</span>
+                  {item.href ? <span>{item.status}</span> : <b>{item.status}</b>}
+                </div>
+                {item.img ? (
+                  <div class="row__thumb">
+                    <img src={item.img} alt={item.alt} loading="lazy" />
+                  </div>
+                ) : (
+                  <div class="row__thumb row__thumb--empty">
+                    <span class="label">Renders to come</span>
+                  </div>
+                )}
+              </Tag>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </section>
+
+  <section class="section method" id="method">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="label">Method</p>
+        <h2 class="h2">Every result, found <em>twice.</em></h2>
+        <p>A stress plot is easy to produce and easy to believe. These are the checks from the café racer study, hand calculation against ANSYS.</p>
+      </div>
+
+      <div class="table-scroll reveal">
+        <table class="data">
+          <thead>
+            <tr>
+              <th scope="col">Check</th>
+              <th scope="col">By hand</th>
+              <th scope="col">ANSYS</th>
+              <th scope="col">Difference</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              checks.map((row) => (
+                <tr>
+                  <td>{row.name}</td>
+                  <td class="num">{row.hand}</td>
+                  <td class="num">{row.fea}</td>
+                  <td class="delta">{row.delta}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <p class="label caught__label">What the second check caught</p>
+      <div class="caught">
+        <article class="reveal">
+          <h3>A singularity, not a stress.</h3>
+          <p>
+            The biggest number on the screen rose 270.7 → 343.2 → 491.7 MPa as the mesh got finer. I checked the spline
+            by hand instead (FoS 3.4) and put the fix, an R0.5 run-out, on the drawing.
+          </p>
+        </article>
+        <article class="reveal">
+          <h3>The supports, not the part.</h3>
+          <p>
+            The first swingarm runs gave a 4.8 m deflection, then a link force of 18 992 N against 23 295 N by hand.
+            Modelling both holes as true pins brought the reactions to within 1 N.
+          </p>
+        </article>
+        <article class="reveal">
+          <h3>A real failure.</h3>
+          <p>
+            The link lever arm measured 119.28 mm, not the 159 mm I had assumed. Every linkage force rose 33%, the frame
+            failed again at 550.5 MPa, and four targeted changes brought it back to FoS 1.14.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="about">
+    <div class="section__head">
+      <p class="label">About</p>
+      <h2 class="h2">Engineer first, <em>renders</em> second.</h2>
+    </div>
+
+    <div class="about">
+      <div class="about__bio reveal">
+        <p>
+          I'm Micheal, in year three of a five-year mechanical engineering degree at the University of Lagos. Before
+          university I spent six months as a mechanic's apprentice at D'leye Automobile.
+        </p>
+        <p>
+          Alongside the degree I run CADmint, a CAD and simulation service, and Panoptes, an aerial photography and
+          survey business. I also teach SolidWorks to other students in the faculty.
+        </p>
+      </div>
+
+      <dl class="facts reveal">
+        <div>
+          <dt class="label">Studying</dt>
+          <dd>B.Sc. Mechanical Engineering, University of Lagos <span>Graduating 2028</span></dd>
+        </div>
+        <div>
+          <dt class="label">Target role</dt>
+          <dd>Design engineer, transmission and chassis</dd>
+        </div>
+        <div>
+          <dt class="label">Tools</dt>
+          <dd>SolidWorks (CSWA) · ANSYS Mechanical and Fluent · MSC Adams · Creo · MATLAB · Python · Blender</dd>
+        </div>
+        <div>
+          <dt class="label">Research</dt>
+          <dd>
+            Volunteer, Decentralized Grid Task Force
+            <span>Second-life EV batteries for Nigerian mini-grids, with Fraunhofer ISI as partner institution</span>
+          </dd>
+        </div>
+        <div>
+          <dt class="label">Community</dt>
+          <dd>Public Relations Officer, Lagos SolidWorks User Group <span>Campus ambassador in 2025</span></dd>
+        </div>
+        <div>
+          <dt class="label">Recognition</dt>
+          <dd>
+            2nd place, CJID competition 2025 (HealthMate)
+            <span>3rd place, Innovate Local (Transidime)</span>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section blog" id="blog">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="label">Blog</p>
+        <h2 class="h2">Notes from <em>outside</em> the CAD.</h2>
+      </div>
+
+      <ol class="work">
+        {
+          posts.map((post) => (
+            <li class="reveal">
+              <a class="row row--post" href={post.href}>
+                <span class="label">{post.no}</span>
+                <div class="row__main">
+                  <h3>
+                    {post.title} <span class="arrow">→</span>
+                  </h3>
+                  <p>{post.text}</p>
+                </div>
+                <div class="row__meta label">
+                  <span>{post.date}</span>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <dialog class="film" aria-label="Café Racer Concept film">
+    <button class="film__close label" type="button" data-film-close>Close ✕</button>
+    <video controls preload="none" playsinline poster="/media/cafe/hero.webp">
+      <source src="/media/cafe-racer-film.mp4" type="video/mp4" />
+    </video>
+  </dialog>
+</Base>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('dialog.film');
+  const film = dialog?.querySelector('video');
+
+  document.querySelector('[data-film-open]')?.addEventListener('click', () => {
+    dialog?.showModal();
+    film?.play();
+  });
+  document.querySelector('[data-film-close]')?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+  dialog?.addEventListener('close', () => film?.pause());
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelector<HTMLVideoElement>('.hero__media video')?.pause();
+  }
+</script>

@@ -1,0 +1,142 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const m = '/media/wing';
+---
+
+<Base
+  title="Front wing in ground effect"
+  description="A 2D RANS ride-height sweep of an inverted NACA 4412 in ANSYS Fluent: downforce rises 47% as the gap closes, then stalls. Where to set the wing, and why."
+  sheet="3 of 3"
+  dwg="MDR-003"
+  image="/media/wing/cfd_vel020.webp"
+>
+  <header class="cs-head wrap">
+    <div class="cs-head__top label">
+      <a href="/#work">← All work</a>
+      <span>Independent study · 2026</span>
+    </div>
+    <h1>Front wing in <em>ground effect</em></h1>
+    <p class="cs-head__lede">
+      An F1 front wing runs centimetres off the road, where ground effect can add downforce or suddenly take it away. I
+      mapped how downforce, drag and the flow change with ride height for a single wing element, and turned that into a
+      ride-height recommendation.
+    </p>
+
+    <dl class="spec">
+      <div><dt class="label">Sweep</dt><dd>11 ride heights, 250 → 15 mm</dd></div>
+      <div><dt class="label">Peak</dt><dd>+47% downforce at a 44 mm gap</dd></div>
+      <div><dt class="label">Then</dt><dd>−16% downforce, 4.5× drag by 15 mm</dd></div>
+      <div><dt class="label">Tools</dt><dd>ANSYS Fluent · 2D RANS, k-ω SST</dd></div>
+    </dl>
+
+    <figure class="cs-media">
+      <img src={`${m}/cfd_vel020.webp`} alt="Velocity contours around the inverted wing at a 50 mm ride height, with fast flow in the gap under the wing." />
+    </figure>
+  </header>
+
+  <div class="wrap">
+    <section class="chapter" style="border-top: 0;">
+      <div class="chapter__side label"><b>A</b>Set-up</div>
+      <div class="chapter__body">
+        <h2 class="h2">Validate first, <em>then</em> sweep.</h2>
+        <div class="pair">
+          <div class="table-scroll">
+            <table class="data">
+              <tbody>
+                <tr><td>Wing</td><td class="num">NACA 4412, inverted, chord 250 mm, 4° incidence</td></tr>
+                <tr><td>Flow</td><td class="num">50 m/s, Re = 8.6 × 10⁵, moving ground</td></tr>
+                <tr><td>Model</td><td class="num">Steady RANS, k-ω SST, coupled, 2nd order</td></tr>
+                <tr><td>Mesh</td><td class="num">107 000–148 000 cells, 25 prism layers</td></tr>
+                <tr><td>Sweep</td><td class="num">h/c 1.0 → 0.06, 11 cases, residuals 1e-5</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-scroll">
+            <table class="data">
+              <thead>
+                <tr><th scope="col">Validation, h/c 1.0</th><th scope="col">CFD</th><th scope="col">Reference</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Downforce C<sub>L</sub></td><td class="num">0.902</td><td class="num">0.875–0.915</td></tr>
+                <tr><td>Drag C<sub>D</sub></td><td class="num">0.0152</td><td class="num">0.0135 (turbulent)</td></tr>
+                <tr><td>Wall y+ on wing</td><td class="num">≤ 1.8</td><td class="num">≈ 1 for SST</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <figure class="fig reveal">
+          <img src={`${m}/cfd_mesh.webp`} alt="Close-up of the CFD mesh with boundary-layer cells wrapped around the wing and along the road." loading="lazy" />
+          <figcaption>Mesh at h/c 0.20: quad boundary layer wrapped round the wing and along the road, fanned at the sharp trailing edge. Reference values from NeuralFoil at the same Reynolds number and incidence.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="chapter__side label"><b>B</b>Result</div>
+      <div class="chapter__body">
+        <h2 class="h2">Downforce climbs, plateaus, then <em>falls.</em></h2>
+        <figure class="fig reveal">
+          <img src={`${m}/ground_effect_curve.webp`} alt="Two charts: downforce coefficient against ride height, peaking near h/c 0.175, and efficiency against ride height." loading="lazy" />
+          <figcaption>Downforce rises 47% as the gap closes to 44 mm, plateaus, then falls 16% by 15 mm while drag climbs 4.5×.</figcaption>
+        </figure>
+
+        <div class="trio reveal">
+          <figure class="fig">
+            <img src={`${m}/cfd_vel100.webp`} alt="Velocity contours at 250 mm ride height." loading="lazy" />
+            <figcaption>h/c 1.0 (250 mm): attached flow, thin wake. C<sub>L</sub> 0.902.</figcaption>
+          </figure>
+          <figure class="fig">
+            <img src={`${m}/cfd_vel020.webp`} alt="Velocity contours at 50 mm ride height." loading="lazy" />
+            <figcaption>h/c 0.20 (50 mm): gap flow accelerates; a small separated zone forms at the tail. C<sub>L</sub> 1.319.</figcaption>
+          </figure>
+          <figure class="fig">
+            <img src={`${m}/cfd_vel006.webp`} alt="Velocity contours at 15 mm ride height with a large separated wake." loading="lazy" />
+            <figcaption>h/c 0.06 (15 mm): gap air reaches 99 m/s, but the rear 43% of the underside separates. C<sub>L</sub> 1.113.</figcaption>
+          </figure>
+        </div>
+
+        <div class="prose">
+          <h3>Why it stalls</h3>
+          <p>
+            Closing the gap speeds up the air under the wing, which adds suction. But the air then has to slow back down
+            before the trailing edge, and the tighter the gap, the harder that recovery. Below about 44 mm the separated
+            zone grows faster than the gap suction, so downforce falls and drag climbs.
+          </p>
+        </div>
+
+        <div class="table-scroll reveal">
+          <table class="data">
+            <thead>
+              <tr><th scope="col">h/c</th><th scope="col">Separates at</th><th scope="col">C<sub>L</sub></th><th scope="col">C<sub>L</sub> / C<sub>D</sub></th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="num">1.00</td><td class="num">none</td><td class="num">0.902</td><td class="num">59.4</td></tr>
+              <tr><td class="num">0.20</td><td class="num">82% chord</td><td class="num">1.319</td><td class="num">43.7</td></tr>
+              <tr><td class="num">0.06</td><td class="num">57% chord</td><td class="num">1.113</td><td class="num">16.4</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="chapter__side label"><b>C</b>Recommendation</div>
+      <div class="chapter__body">
+        <p class="pull">Set the wing at 50 mm, <em>not</em> at the peak.</p>
+        <div class="prose">
+          <p>
+            At h/c 0.20 the wing makes 99.5% of maximum downforce with 11% better efficiency, and keeps 6 mm of margin
+            before heave or braking pitch push it onto the falling side, where downforce drops as the car sinks. That
+            loop is the same physics behind porpoising.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <a class="next" href="/work/cafe-racer/">
+      <span class="label">Next project</span>
+      <span>Café Racer Concept <span class="arrow">→</span></span>
+    </a>
+  </div>
+</Base>
