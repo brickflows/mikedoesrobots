@@ -929,6 +929,43 @@ a.row:hover .row__thumb img {
   color: var(--accent-text);
 }
 
+/* ---------- portfolio page ---------- */
+
+.pf-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(20px, 3vw, 36px);
+}
+
+.pf {
+  display: grid;
+  gap: clamp(12px, 2vw, 24px);
+  margin-top: clamp(28px, 4vw, 56px);
+  padding-bottom: clamp(48px, 7vw, 104px);
+}
+
+.pf__page {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.pf__page img {
+  width: 100%;
+}
+
+.pf__page a {
+  position: absolute;
+  border-radius: 2px;
+}
+
+.pf__page a:hover {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
 /* ---------- motion ---------- */
 
 .js .reveal {
