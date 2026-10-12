@@ -46,7 +46,7 @@ const pages = [
   description="My 16-page mechanical design portfolio: frame, swingarm, transmission and aerodynamics case studies, two manufacturing plans and two team projects. Read it here or download the PDF."
   sheet="Portfolio"
   dwg="MDR-P04"
-  image="/media/portfolio_mahle/p01.webp"
+  image="/media/portfolio-mahle/p01.webp"
   noindex
 >
   <header class="cs-head wrap">
@@ -70,7 +70,7 @@ const pages = [
       pages.map((page, i) => (
         <li class="pf__page">
           <img
-            src={`/media/portfolio_mahle/p${String(i + 1).padStart(2, '0')}.webp`}
+            src={`/media/portfolio-mahle/p${String(i + 1).padStart(2, '0')}.webp`}
             alt={`Page ${i + 1} of 16. ${page.alt}`}
             width="3200"
             height="2263"
