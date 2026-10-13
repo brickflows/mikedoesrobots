@@ -1,0 +1,90 @@
+---
+import Base from '../layouts/Base.astro';
+
+const pdf = '/portfolio/Micheal_Adediran_Portfolio_NG.pdf';
+
+// One entry per PDF page. Link boxes are the PDF's own link rectangles, as percentages of the page.
+const pages = [
+  {
+    alt: 'Cover: Micheal Adediran, BSc Mechanical Engineering, University of Lagos. Target role, availability, tools and contact details beside a render of the café racer.',
+    links: [
+      { href: 'mailto:michealadedirann@gmail.com', label: 'Email', x: 1.53, y: 71.94, w: 19.41, h: 2.5 },
+      { href: 'https://github.com/brickflows', label: 'GitHub', x: 1.53, y: 74.85, w: 14.28, h: 2.5 },
+      { href: 'https://mikedoesrobots.com/', label: 'mikedoesrobots.com', x: 1.53, y: 80.65, w: 13.48, h: 2.5 },
+      { href: 'https://www.linkedin.com/in/michealadediran1885/', label: 'LinkedIn', x: 1.53, y: 83.56, w: 23.72, h: 2.5 },
+    ],
+  },
+  {
+    alt: 'Contents, beside a rear three-quarter render of the café racer.',
+    links: [{ href: 'https://www.youtube.com/watch?v=PtR7k8kXTPk', label: 'Play the film on YouTube', x: 88.72, y: 93.51, w: 7.44, h: 2.02 }],
+  },
+  { alt: 'Motorcycle details: vehicle specification table, what the project is and how I worked, over an exploded view.' },
+  { alt: 'The model: side profile, night view, exploded engine and engine-on renders.' },
+  {
+    alt: 'Case study A, frame, 1 of 2. Loads and model: a 3 g bump with two riders.',
+    links: [{ href: 'https://github.com/brickflows/motorcycle', label: 'Project files on GitHub', x: 92.78, y: 5.99, w: 2.65, h: 2.02 }],
+  },
+  { alt: 'Case study A, frame, 2 of 2. Initial against final stress, 1692.6 to 404.0 MPa: why it failed, what I changed and the result.' },
+  { alt: 'Case study B, swingarm, 1 of 2. Validated baseline: the link carries 23,296 N, about a third above my assumption.' },
+  { alt: 'Case study B, swingarm, 2 of 2. Four load cases with stress plots and a results table.' },
+  { alt: "Case study C, transmission, 1 of 2. The shaft passes; the teeth don't: stress plots and hand calculation against ANSYS." },
+  { alt: 'Case study C, transmission, 2 of 2. Goodman diagram, gear tooth checks and conclusion.' },
+  { alt: 'Manufacture, output shaft: bar to ground journal in seven steps, with the shaft drawing.' },
+  { alt: 'Manufacture, right engine case: seven casting fixes, with the case drawing.' },
+  {
+    alt: 'Case study D, aerodynamics, 1 of 2. Front wing in ground effect: +47% downforce, then a stall. Set-up, validation and mesh.',
+    links: [{ href: 'https://github.com/brickflows/front-wing-ground-effect', label: 'Project files on GitHub', x: 90.14, y: 4.64, w: 2.65, h: 2.02 }],
+  },
+  { alt: 'Case study D, aerodynamics, 2 of 2. Why it stalls: separation creeps forward as the gap closes. Velocity plots and recommendation.' },
+  { alt: 'Other work. TRANSIDIME: a plug-in translation hub, 3rd place at Innovate Local.' },
+  { alt: 'Other work. NAVI: a collapsible navigation cane for blind users, a four-person team project.' },
+];
+---
+
+<Base
+  title="Micheal Adediran: design portfolio"
+  description="My 16-page mechanical design portfolio: frame, swingarm, transmission and aerodynamics case studies, two manufacturing plans and two team projects. Read it here or download the PDF."
+  sheet="Portfolio"
+  dwg="MDR-P05"
+  image="/media/portfolio-ng/p01.webp"
+  noindex
+>
+  <header class="cs-head wrap">
+    <div class="cs-head__top label">
+      <a href="/">← Home</a>
+      <span>PDF · 16 pages · 14.3 MB</span>
+    </div>
+    <h1>Design <em>portfolio</em></h1>
+    <p class="cs-head__lede">
+      Four case studies from the café racer and front wing projects, two manufacturing plans and two team projects.
+      Read it here or download the PDF.
+    </p>
+    <div class="pf-cta">
+      <a class="btn" href={pdf} download>Download PDF <span class="arrow">↓</span></a>
+      <a class="btn btn--ghost" href={pdf} target="_blank" rel="noopener">Open PDF</a>
+    </div>
+  </header>
+
+  <ol class="pf wrap">
+    {
+      pages.map((page, i) => (
+        <li class="pf__page">
+          <img
+            src={`/media/portfolio-ng/p${String(i + 1).padStart(2, '0')}.webp`}
+            alt={`Page ${i + 1} of 16. ${page.alt}`}
+            width="3200"
+            height="2263"
+            loading={i === 0 ? 'eager' : 'lazy'}
+          />
+          {page.links?.map((link) => (
+            <a
+              href={link.href}
+              aria-label={link.label}
+              style={`left:${link.x}%;top:${link.y}%;width:${link.w}%;height:${link.h}%`}
+            />
+          ))}
+        </li>
+      ))
+    }
+  </ol>
+</Base>
