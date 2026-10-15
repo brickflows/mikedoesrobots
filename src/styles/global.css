@@ -945,6 +945,10 @@ a.row:hover .row__thumb img {
   padding-bottom: clamp(48px, 7vw, 104px);
 }
 
+.pf--portrait .pf__page {
+  max-width: 880px;
+}
+
 .pf__page {
   position: relative;
   overflow: hidden;

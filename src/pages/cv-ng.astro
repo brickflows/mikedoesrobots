@@ -1,0 +1,70 @@
+---
+import Base from '../layouts/Base.astro';
+
+const pdf = '/portfolio/Micheal_Adediran_CV_NG.pdf';
+
+// Link boxes are the PDF's own link rectangles, as percentages of the page.
+const links = [
+  { href: 'mailto:michealadedirann@gmail.com', label: 'Email', x: 52.76, y: 6.09, w: 21.62, h: 1.45 },
+  { href: 'https://mikedoesrobots.com/', label: 'mikedoesrobots.com', x: 10.71, y: 7.54, w: 15.17, h: 1.45 },
+  { href: 'https://www.linkedin.com/in/michealadediran1885/', label: 'LinkedIn', x: 27.41, y: 7.54, w: 26.9, h: 1.45 },
+  { href: 'https://github.com/brickflows', label: 'GitHub', x: 55.85, y: 7.54, w: 16.12, h: 1.45 },
+  { href: 'https://x.com/mikedoesrobots', label: 'X', x: 72.75, y: 7.54, w: 16.54, h: 1.45 },
+  { href: 'https://github.com/brickflows/motorcycle', label: 'Motorcycle project files on GitHub', x: 68.8, y: 30.6, w: 24.44, h: 1.45 },
+  { href: 'https://github.com/brickflows/front-wing-ground-effect', label: 'Front wing project files on GitHub', x: 59.35, y: 48.23, w: 33.88, h: 1.69 },
+  {
+    href: 'https://thenationonlineng.net/cjid-launches-ai-campus-network-to-train-10000-young-africans-by-2030/',
+    label: 'The Nation press coverage',
+    x: 45.27,
+    y: 79.81,
+    w: 8.28,
+    h: 1.45,
+  },
+];
+---
+
+<Base
+  title="Micheal Adediran: CV"
+  description="My one-page CV: BSc Mechanical Engineering at the University of Lagos, seeking SIWES industrial training from April to September 2027. Read it here or download the PDF."
+  sheet="CV"
+  dwg="MDR-C01"
+  image="/media/cv-ng/p01.webp"
+  noindex
+>
+  <header class="cs-head wrap">
+    <div class="cs-head__top label">
+      <a href="/">← Home</a>
+      <span>PDF · 1 page · 224 KB</span>
+    </div>
+    <h1>Curriculum <em>vitae</em></h1>
+    <p class="cs-head__lede">
+      Mechanical engineering student at the University of Lagos, seeking SIWES industrial training from April to
+      September 2027. Read it here or download the PDF.
+    </p>
+    <div class="pf-cta">
+      <a class="btn" href={pdf} download>Download PDF <span class="arrow">↓</span></a>
+      <a class="btn btn--ghost" href={pdf} target="_blank" rel="noopener">Open PDF</a>
+    </div>
+  </header>
+
+  <ol class="pf pf--portrait wrap">
+    <li class="pf__page">
+      <img
+        src="/media/cv-ng/p01.webp"
+        alt="CV of Micheal T. Adediran, BSc Mechanical Engineering, University of Lagos, CGPA 4.06/5.00. Areas of interest, education, technical skills, independent engineering projects (198-part motorcycle, Transidime enclosure, front wing CFD study), experience, team projects and awards, and leadership and teaching."
+        width="2400"
+        height="3395"
+        loading="eager"
+      />
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            aria-label={link.label}
+            style={`left:${link.x}%;top:${link.y}%;width:${link.w}%;height:${link.h}%`}
+          />
+        ))
+      }
+    </li>
+  </ol>
+</Base>
